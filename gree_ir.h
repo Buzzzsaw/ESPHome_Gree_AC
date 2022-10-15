@@ -46,9 +46,9 @@ public:
 
     traits.set_supports_current_temperature(true);
     traits.set_supports_two_point_target_temperature(false);
-    traits.set_visual_min_temperature(16);
+    traits.set_visual_min_temperature(10);
     traits.set_visual_max_temperature(30);
-    traits.set_visual_temperature_step(0.1); //Show current temperature with degrees
+    traits.set_visual_temperature_step(1); // My model doesn't have decimals
 
 
     std::set<ClimateMode> climateModes; 
