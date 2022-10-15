@@ -3,7 +3,7 @@
 #include "IRsend.h"
 #include "ir_Gree.h"
 
-const uint16_t kIrLed = 14;
+const uint16_t kIrLed = 4;
 IRGreeAC ac(kIrLed);
 
 class GreeAC : public Component, public Climate, public CustomAPIDevice
@@ -242,22 +242,5 @@ public:
     ac.setLight(light);
 
     call.perform();
-  }
-};
-
-class GreeLightSwitch : public PollingComponent, public Switch {
- public:
-  GreeLightSwitch() : PollingComponent(5000) {}
-
-  void write_state(bool state) override {
-    ac.setLight(state);
-    ac.send();
-
-    publish_state(ac.getLight());
-  }
-
-  void update() override
-  {
-    publish_state(ac.getLight());
   }
 };
