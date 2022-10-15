@@ -35,7 +35,6 @@ climate:
     return {ac_head};
   climates:
     - name: "HVAC Head 0"
-  id: blabla0
 
 sensor:
   - platform: homeassistant
