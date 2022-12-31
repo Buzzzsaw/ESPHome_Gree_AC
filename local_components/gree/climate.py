@@ -4,7 +4,7 @@ from esphome import pins
 from esphome.components import climate
 from esphome.const import (
   CONF_ID, 
-  CONF_IR_PIN
+  CONF_PIN
 )
 
 CODEOWNERS = ["@buzzzsaw"]
@@ -15,7 +15,7 @@ GreeClimate = gree_ns.class_("GreeClimate", climate.Climate)
 CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
     {
         cv.GenerateID(): cv.declare_id(GreeClimate),
-        cv.Optional(CONF_IR_PIN): pins.gpio_output_pin_schema,
+        cv.Optional(CONF_PIN): pins.gpio_output_pin_schema,
     }
 )
 
