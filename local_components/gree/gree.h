@@ -8,21 +8,21 @@
 namespace esphome {
 namespace gree {
 
-class GreeClimate : public Component, public Climate
-{
+class GreeClimate : public climate::Climate, public Component {
 private:
   IRGreeAC* transmitter;
 
-  void setClimateMode(const ClimateMode climateMode);
+  void setClimateMode(const climate::ClimateMode climateMode);
   void setTargetTemperature(const float targetTemperature);
-  void setFanMode(const ClimateFanMode fanMode);
-  void setSwingMode(const ClimateSwingMode swingMode);
+  void setFanMode(const climate::ClimateFanMode fanMode);
+  void setSwingMode(const climate::ClimateSwingMode swingMode);
 
 public:
-  GreeClimate(const uint16_t irPinNumber);
+  GreeClimate(InternalGPIOPin *pin);
+
   void setup() override;
-  climate::ClimateTraits traits();
-  void control(const ClimateCall &call) override;
+  climate::ClimateTraits traits() override;
+  void control(const climate::ClimateCall &call) override;
 };
 
 } // namespace gree
