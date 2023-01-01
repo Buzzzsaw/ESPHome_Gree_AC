@@ -1,4 +1,7 @@
 #include "gree.h"
+#include "esphome/core/log.h"
+
+static const char *const TAG = "gree.climate";
 
 namespace esphome {
 namespace gree {
@@ -101,6 +104,9 @@ void GreeClimate::setClimateMode(const climate::ClimateMode climateMode)
   case climate::CLIMATE_MODE_OFF:
     this->transmitter_->off();
     break;
+  default:
+    ESP_LOGE(TAG, "Invalid climate mode %d", climateMode);
+    return;
   }
 
   this->mode = climateMode;
@@ -139,6 +145,9 @@ void GreeClimate::setFanMode(const climate::ClimateFanMode fanMode)
       this->transmitter_->setFan(kGreeFanMax);
       this->transmitter_->setTurbo(true);
       break;
+    default:
+      ESP_LOGE(TAG, "Invalid climate fan mode %d", fanMode);
+      return;
     }
 
     this->fan_mode = fanMode;
@@ -155,6 +164,9 @@ void GreeClimate::setSwingMode(const climate::ClimateSwingMode swingMode)
   case climate::CLIMATE_SWING_VERTICAL:
     this->transmitter_->setSwingVertical(true, kGreeSwingAuto);
     break;
+  default:
+    ESP_LOGE(TAG, "Invalid climate swing mode %d", swingMode);
+    return;
   }
 
   this->swing_mode = swingMode;
