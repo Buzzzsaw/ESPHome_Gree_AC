@@ -5,12 +5,12 @@ namespace gree {
 
 GreeClimate::GreeClimate(InternalGPIOPin *pin)
 {
-  this->transmitter = new IRGreeAC(pin->get_pin());
+  this->transmitter_ = new IRGreeAC(pin->get_pin());
 }
 
 void GreeClimate::setup()
 {
-  this->transmitter->begin();
+  this->transmitter_->begin();
 }
 
 climate::ClimateTraits GreeClimate::traits()
@@ -19,9 +19,18 @@ climate::ClimateTraits GreeClimate::traits()
 
   traits.set_supports_current_temperature(false);
   traits.set_supports_two_point_target_temperature(false);
-  traits.set_visual_min_temperature(10);
-  traits.set_visual_max_temperature(30);
-  traits.set_visual_temperature_step(1);
+  if (this->visual_min_temperature_override_.has_value()) 
+  {
+    traits.set_visual_min_temperature(*this->visual_min_temperature_override_);
+  }
+  if (this->visual_max_temperature_override_.has_value()) 
+  {
+    traits.set_visual_max_temperature(*this->visual_max_temperature_override_);
+  }
+  if (this->visual_temperature_step_override_.has_value()) 
+  {
+    traits.set_visual_temperature_step(*this->visual_temperature_step_override_);
+  }
 
   std::set<climate::ClimateMode> climateModes; 
   climateModes.insert(climate::CLIMATE_MODE_OFF);
@@ -66,7 +75,7 @@ void GreeClimate::control(const climate::ClimateCall &call)
     setSwingMode(*call.get_swing_mode());
   }
 
-  this->transmitter->send();
+  this->transmitter_->send();
 }
 
 void GreeClimate::setClimateMode(const climate::ClimateMode climateMode)
@@ -74,23 +83,23 @@ void GreeClimate::setClimateMode(const climate::ClimateMode climateMode)
   switch (climateMode)
   {
   case climate::CLIMATE_MODE_HEAT:
-    this->transmitter->setMode(kGreeHeat);
-    this->transmitter->on();
+    this->transmitter_->setMode(kGreeHeat);
+    this->transmitter_->on();
     break;
   case climate::CLIMATE_MODE_COOL:
-    this->transmitter->setMode(kGreeCool);
-    this->transmitter->on();
+    this->transmitter_->setMode(kGreeCool);
+    this->transmitter_->on();
     break;
   case climate::CLIMATE_MODE_DRY:
-    this->transmitter->setMode(kGreeDry);
-    this->transmitter->on();
+    this->transmitter_->setMode(kGreeDry);
+    this->transmitter_->on();
     break;
   case climate::CLIMATE_MODE_FAN_ONLY:
-    this->transmitter->setMode(kGreeFan);
-    this->transmitter->on();
+    this->transmitter_->setMode(kGreeFan);
+    this->transmitter_->on();
     break;
   case climate::CLIMATE_MODE_OFF:
-    this->transmitter->off();
+    this->transmitter_->off();
     break;
   }
 
@@ -100,7 +109,7 @@ void GreeClimate::setClimateMode(const climate::ClimateMode climateMode)
 
 void GreeClimate::setTargetTemperature(const float targetTemperature)
 {
-  this->transmitter->setTemp(targetTemperature);
+  this->transmitter_->setTemp(targetTemperature);
 
   this->target_temperature = targetTemperature;
   this->publish_state();
@@ -111,24 +120,24 @@ void GreeClimate::setFanMode(const climate::ClimateFanMode fanMode)
     switch (fanMode)
     {
     case climate::CLIMATE_FAN_AUTO:
-      this->transmitter->setFan(kGreeFanAuto);
-      this->transmitter->setTurbo(false);
+      this->transmitter_->setFan(kGreeFanAuto);
+      this->transmitter_->setTurbo(false);
       break;
     case climate::CLIMATE_FAN_LOW:
-      this->transmitter->setFan(kGreeFanMin);
-      this->transmitter->setTurbo(false);
+      this->transmitter_->setFan(kGreeFanMin);
+      this->transmitter_->setTurbo(false);
       break;
     case climate::CLIMATE_FAN_MEDIUM:
-      this->transmitter->setFan(kGreeFanMed);
-      this->transmitter->setTurbo(false);
+      this->transmitter_->setFan(kGreeFanMed);
+      this->transmitter_->setTurbo(false);
       break;
     case climate::CLIMATE_FAN_HIGH:
-      this->transmitter->setFan(kGreeFanMax);
-      this->transmitter->setTurbo(false);
+      this->transmitter_->setFan(kGreeFanMax);
+      this->transmitter_->setTurbo(false);
       break;
     case climate::CLIMATE_FAN_FOCUS:
-      this->transmitter->setFan(kGreeFanMax);
-      this->transmitter->setTurbo(true);
+      this->transmitter_->setFan(kGreeFanMax);
+      this->transmitter_->setTurbo(true);
       break;
     }
 
@@ -141,10 +150,10 @@ void GreeClimate::setSwingMode(const climate::ClimateSwingMode swingMode)
   switch (swingMode)
   {
   case climate::CLIMATE_SWING_OFF:
-    this->transmitter->setSwingVertical(false, kGreeSwingLastPos);
+    this->transmitter_->setSwingVertical(false, kGreeSwingLastPos);
     break;
   case climate::CLIMATE_SWING_VERTICAL:
-    this->transmitter->setSwingVertical(true, kGreeSwingAuto);
+    this->transmitter_->setSwingVertical(true, kGreeSwingAuto);
     break;
   }
 

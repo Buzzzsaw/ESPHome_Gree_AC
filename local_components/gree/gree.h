@@ -10,7 +10,7 @@ namespace gree {
 
 class GreeClimate : public climate::Climate, public Component {
 private:
-  IRGreeAC* transmitter;
+  IRGreeAC* transmitter_;
 
   void setClimateMode(const climate::ClimateMode climateMode);
   void setTargetTemperature(const float targetTemperature);
