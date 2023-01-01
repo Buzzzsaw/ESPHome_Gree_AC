@@ -23,17 +23,13 @@ climate::ClimateTraits GreeClimate::traits()
   traits.set_visual_max_temperature(30);
   traits.set_visual_temperature_step(1);
 
-
   std::set<climate::ClimateMode> climateModes; 
   climateModes.insert(climate::CLIMATE_MODE_OFF);
-  climateModes.insert(climate::CLIMATE_MODE_HEAT_COOL);
   climateModes.insert(climate::CLIMATE_MODE_COOL);
   climateModes.insert(climate::CLIMATE_MODE_HEAT);
   climateModes.insert(climate::CLIMATE_MODE_DRY);
   climateModes.insert(climate::CLIMATE_MODE_FAN_ONLY);
-
   traits.set_supported_modes(climateModes);
-
 
   std::set<climate::ClimateFanMode> climateFanModes; 
   climateFanModes.insert(climate::CLIMATE_FAN_AUTO);
@@ -41,14 +37,11 @@ climate::ClimateTraits GreeClimate::traits()
   climateFanModes.insert(climate::CLIMATE_FAN_MEDIUM);
   climateFanModes.insert(climate::CLIMATE_FAN_HIGH);
   climateFanModes.insert(climate::CLIMATE_FAN_FOCUS);
-
   traits.set_supported_fan_modes(climateFanModes);
-
 
   std::set<climate::ClimateSwingMode> climateSwingModes;
   climateSwingModes.insert(climate::CLIMATE_SWING_OFF);
   climateSwingModes.insert(climate::CLIMATE_SWING_VERTICAL);
-
   traits.set_supported_swing_modes(climateSwingModes);
 
   return traits;
@@ -86,10 +79,6 @@ void GreeClimate::setClimateMode(const climate::ClimateMode climateMode)
     break;
   case climate::CLIMATE_MODE_COOL:
     this->transmitter->setMode(kGreeCool);
-    this->transmitter->on();
-    break;
-  case climate::CLIMATE_MODE_HEAT_COOL:
-    this->transmitter->setMode(kGreeAuto);
     this->transmitter->on();
     break;
   case climate::CLIMATE_MODE_DRY:
