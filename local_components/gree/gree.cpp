@@ -13,6 +13,20 @@ GreeClimate::GreeClimate(InternalGPIOPin *pin)
 
 void GreeClimate::setup()
 {
+  if (this->temperature_sensor_)
+  {
+    this->temperature_sensor_->add_on_state_callback([this](float state)
+    {
+      this->current_temperature = state;
+      this->publish_state();
+    });
+    this->current_temperature = this->temperature_sensor_->state;
+  } 
+  else
+  {
+    this->current_temperature = NAN;
+  }
+
   this->transmitter_->begin();
 }
 
@@ -20,7 +34,7 @@ climate::ClimateTraits GreeClimate::traits()
 {
   auto traits = climate::ClimateTraits();
 
-  traits.set_supports_current_temperature(false);
+  traits.set_supports_current_temperature(this->temperature_sensor_ != nullptr);
   traits.set_supports_two_point_target_temperature(false);
   if (this->visual_min_temperature_override_.has_value()) 
   {
