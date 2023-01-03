@@ -14,7 +14,7 @@ GreeClimate = gree_ns.class_("GreeClimate", climate.Climate, cg.Component)
 CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
     {
         cv.GenerateID(): cv.declare_id(GreeClimate),
-        cv.Optional(CONF_PIN): pins.gpio_output_pin_schema,
+        cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
         cv.Optional(CONF_SENSOR): cv.use_id(sensor.Sensor),
     }
 ).extend(cv.COMPONENT_SCHEMA)
