@@ -13,6 +13,7 @@ GreeClimate::GreeClimate(InternalGPIOPin *pin)
 
 void GreeClimate::setup()
 {
+  // Initialize provided temperature sensor, if any.
   if (this->temperature_sensor_)
   {
     this->temperature_sensor_->add_on_state_callback([this](float state)
@@ -25,6 +26,21 @@ void GreeClimate::setup()
   else
   {
     this->current_temperature = NAN;
+  }
+
+  // Restore previous state, if any.
+  auto restore = this->restore_state_();
+  if (restore.has_value())
+  {
+    restore->apply(this);
+  } 
+  else
+  {
+    // Set some arbitrary defaults.
+    this->mode = climate::CLIMATE_MODE_OFF;
+    this->fan_mode = climate::CLIMATE_FAN_LOW;
+    this->swing_mode = climate::CLIMATE_SWING_OFF;
+    this->target_temperature = traits().get_visual_min_temperature();
   }
 
   this->transmitter_->begin();
