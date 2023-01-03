@@ -13,7 +13,7 @@ GreeClimate::GreeClimate(InternalGPIOPin *pin)
 
 void GreeClimate::setup()
 {
-  if (this->temperature_sensor_)
+  if (this->temperature_sensor_ != nullptr)
   {
     this->temperature_sensor_->add_on_state_callback([this](float state)
     {

@@ -17,13 +17,14 @@ CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
         cv.Optional(CONF_PIN): pins.gpio_output_pin_schema,
         cv.Optional(CONF_SENSOR): cv.use_id(sensor.Sensor),
     }
-)
+).extend(cv.COMPONENT_SCHEMA)
 
 
 async def to_code(config):
     pin = await cg.gpio_pin_expression(config[CONF_PIN])
     var = cg.new_Pvariable(config[CONF_ID], pin)
 
+    await cg.register_component(var, config)
     await climate.register_climate(var, config)
 
     if CONF_SENSOR in config:

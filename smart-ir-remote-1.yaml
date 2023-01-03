@@ -18,13 +18,6 @@ ota:
 external_components:
   - source: local_components
     components: [ gree ]
- 
-remote_transmitter:
-  pin: 
-    number: GPIO4
-    inverted: false
-  carrier_duty_percent: 50%
-  id: "smart_ir_remote_1"
 
 climate:
 - platform: gree
@@ -33,4 +26,4 @@ climate:
   visual:
     min_temperature: 10 °C
     max_temperature: 30 °C
-    temperature_step: 1.0 °C 
+    temperature_step: 1.0 °C

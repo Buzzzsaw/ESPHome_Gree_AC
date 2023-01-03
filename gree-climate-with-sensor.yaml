@@ -1,0 +1,41 @@
+# Example config of a Gree climate component with a current temperature sensor
+esphome:
+  name: "gree-climate-with-sensor"
+  platform: ESP8266
+  board: d1_mini
+  
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+ 
+external_components:
+  - source: local_components
+    components: [ gree ]
+
+sensor:
+  - platform: homeassistant
+    id: current_temperature
+    name: "Current Temperature"
+    entity_id: sensor.shawinigan_temperature
+    state_class: measurement
+    device_class: temperature
+    accuracy_decimals: 1
+    unit_of_measurement: °C
+
+climate:
+- platform: gree
+  name: "HVAC Head with sensor"
+  pin: GPIO4
+  visual:
+    min_temperature: 10 °C
+    max_temperature: 30 °C
+    temperature_step: 1.0 °C
+  sensor: current_temperature

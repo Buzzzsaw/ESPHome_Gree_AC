@@ -2,10 +2,6 @@ esphome:
   name: "smart-ir-remote-2"
   platform: ESP8266
   board: d1_mini
-  includes: 
-    - gree/gree_ir.h
-  libraries:
-    - IRremoteESP8266
   
 wifi:
   ssid: !secret wifi_ssid
@@ -19,24 +15,15 @@ api:
 
 ota:
  
-remote_transmitter:
-  pin: 
-    number: GPIO4
-    inverted: false
-  carrier_duty_percent: 50%
-  id: "smart_ir_remote_2"
+external_components:
+  - source: local_components
+    components: [ gree ]
 
 climate:
-- platform: custom
-  lambda: |-
-    auto ac_head = new GreeAC();
-    ac_head->set_temp_sensor(id(current_temperature));
-    App.register_component(ac_head);
-    return {ac_head};
-  climates:
-    - name: "HVAC Head 2"
-
-sensor:
-  - platform: homeassistant
-    id: current_temperature
-    entity_id: sensor.temperature
+- platform: gree
+  name: "HVAC Head 2"
+  pin: GPIO4
+  visual:
+    min_temperature: 10 °C
+    max_temperature: 30 °C
+    temperature_step: 1.0 °C
