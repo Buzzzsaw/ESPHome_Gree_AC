@@ -1,16 +1,27 @@
-esphome:
+substitutions:
   name: "smart-ir-remote-2"
+
+esphome:
+  name: "${name}"
   platform: ESP8266
   board: d1_mini
   
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+  manual_ip:
+    static_ip: !secret ip_smartirremote_2
+    gateway: !secret ip_gateway
+    subnet: !secret ip_subnet
+  ap: 
+    ssid: ${name}-AP
+    password: !secret wifi_password
+    ap_timeout: 3min
+    
+captive_portal:
 
-# Enable logging
 logger:
 
-# Enable Home Assistant API
 api:
 
 ota:
