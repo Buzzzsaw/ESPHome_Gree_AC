@@ -60,9 +60,9 @@ climate::ClimateTraits GreeClimate::traits()
   {
     traits.set_visual_max_temperature(*this->visual_max_temperature_override_);
   }
-  if (this->visual_temperature_step_override_.has_value()) 
+  if (this->visual_target_temperature_step_override_.has_value()) 
   {
-    traits.set_visual_temperature_step(*this->visual_temperature_step_override_);
+    traits.set_visual_temperature_step(*this->visual_target_temperature_step_override_);
   }
 
   std::set<climate::ClimateMode> climateModes; 
