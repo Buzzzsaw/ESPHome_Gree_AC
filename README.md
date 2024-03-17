@@ -2,11 +2,11 @@
 
 This repository contains an ESPHome external component that can simulate an IR remote to control a Gree HVAC unit. The component uses a standard `climate` card and expects to use an IR LED circuit hooked to an ESP8266.
 
+This component uses the IRremoteESP8266 library with the [default Gree YAW protocol](https://github.com/crankyoldgit/IRremoteESP8266/blob/d8aee22117b826945724dfb4f1b94d82d68f31f0/src/ir_Gree.h#L160). If it doesn't work for you, try the [official ESPHome components](https://esphome.io/components/climate/climate_ir.html#gree-ir) instead.
+
 ## Installation
 
-* Create a `local_components` directory in your ESPHome HA config directory (typically `/config/esphome/`). If you are already using [external components](https://esphome.io/components/external_components.html) in your ESPHome setup, simply change the source in your `.yaml` config accordingly.
-* Drop the `local_components/gree/' directory and all its content in your previously created local external components directory. There shouldn't be anything to adjust in the files.
-* Adopt your ESP devices and use the `gree-climate-with-sensor.yaml` config file as a reference.
+* Adopt your ESP device(s) and use the `gree-climate-with-sensor.yaml` config file as a reference.
 * Add the climate cards to your dashboards.
 * Start automating stuff 8D
 
