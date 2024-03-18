@@ -28,6 +28,15 @@ void GreeClimate::setup()
     this->current_temperature = NAN;
   }
 
+  // Initialize iFeel switch, if any.
+  if (this->ifeel_switch_)
+  {
+    this->ifeel_switch_->add_on_state_callback([this](bool state)
+    {
+      ESP_LOGI(TAG, "iFeel turned %s", state ? "ON" : "OFF");
+    });
+  }
+
   // Restore previous state, if any.
   auto restore = this->restore_state_();
   if (restore.has_value())

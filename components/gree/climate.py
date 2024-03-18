@@ -1,11 +1,11 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import pins
-from esphome.components import climate, sensor
-from esphome.const import CONF_ID, CONF_PIN, CONF_SENSOR
+from esphome.components import climate, sensor, switch
+from esphome.const import CONF_ID, CONF_PIN, CONF_SENSOR, CONF_SWITCH
 from esphome.core import CORE
 
-AUTO_LOAD = ["sensor"]
+AUTO_LOAD = ["sensor, switch"]
 CODEOWNERS = ["@buzzzsaw"]
 
 gree_ns = cg.esphome_ns.namespace("gree")
@@ -16,6 +16,7 @@ CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
         cv.GenerateID(): cv.declare_id(GreeClimate),
         cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
         cv.Optional(CONF_SENSOR): cv.use_id(sensor.Sensor),
+        cv.Optional(CONF_SWITCH): cv.use_id(switch.Switch)
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
@@ -28,8 +29,12 @@ async def to_code(config):
     await climate.register_climate(var, config)
 
     if CONF_SENSOR in config:
-      temperature_sensor = await cg.get_variable(config[CONF_SENSOR])
-      cg.add(var.set_temperature_sensor(temperature_sensor))
+        temperature_sensor = await cg.get_variable(config[CONF_SENSOR])
+        cg.add(var.set_temperature_sensor(temperature_sensor))
+    
+    if CONF_SWITCH in config:
+        ifeel_switch = await cg.get_variable(config[CONF_SWITCH])
+        cg.add(var.set_ifeel_switch(ifeel_switch))
 
     if CORE.is_esp8266 or CORE.is_esp32:
-        cg.add_library("crankyoldgit/IRremoteESP8266", "2.8.4")
+        cg.add_library("crankyoldgit/IRremoteESP8266", "2.8.6")

@@ -40,11 +40,17 @@ sensor:
     accuracy_decimals: 1
     unit_of_measurement: °C
 
+switch:
+  - platform: template
+    id: ifeel
+    name: "iFeel"
+
 climate:
 - platform: gree
   name: "HVAC Head with sensor"
   pin: GPIO4
   sensor: current_temperature
+  ifeel_switch: ifeel 
   visual:
       min_temperature: 10
       max_temperature: 30
