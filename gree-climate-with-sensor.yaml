@@ -44,16 +44,17 @@ switch:
   - platform: template
     id: ifeel
     name: "iFeel"
+    optimistic: true
 
 climate:
-- platform: gree
-  name: "HVAC Head with sensor"
-  pin: GPIO4
-  sensor: current_temperature
-  ifeel_switch: ifeel 
-  visual:
-      min_temperature: 10
-      max_temperature: 30
-      temperature_step:
-        target_temperature: 1.0
-        current_temperature: 0.1
+  - platform: gree
+    name: "HVAC Head with sensor"
+    pin: GPIO4
+    sensor: current_temperature
+    ifeel_switch: ifeel
+    visual:
+        min_temperature: 10
+        max_temperature: 30
+        temperature_step:
+          target_temperature: 1.0
+          current_temperature: 0.1
