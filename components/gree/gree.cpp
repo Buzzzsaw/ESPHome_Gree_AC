@@ -31,10 +31,17 @@ void GreeClimate::setup()
   // Initialize iFeel switch, if any.
   if (this->ifeel_switch_)
   {
-    this->ifeel_switch_->add_on_state_callback([this](bool state)
+    if (this->temperature_sensor_)
     {
-      ESP_LOGI(TAG, "iFeel turned %s", state ? "ON" : "OFF");
-    });
+      this->ifeel_switch_->add_on_state_callback([this](bool state)
+      {
+        ESP_LOGI(TAG, "iFeel turned %s", state ? "ON" : "OFF");
+      });
+    }
+    else
+    {
+      ESP_LOGI(TAG, "Temperature sensor is not defined: ignoring iFeel switch.");
+    }
   }
 
   // Restore previous state, if any.
