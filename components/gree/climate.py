@@ -40,4 +40,4 @@ async def to_code(config):
 
     if CORE.is_esp8266 or CORE.is_esp32:
         cg.add_library("crankyoldgit/IRremoteESP8266", "2.8.6")
-        cg.add_library("letscontrolit/ESPEasy", "mega-20240229")
+        cg.add_library("letscontrolit/ESPEasy", None)
