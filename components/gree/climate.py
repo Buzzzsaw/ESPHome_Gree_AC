@@ -39,9 +39,5 @@ async def to_code(config):
         cg.add(var.set_ifeel_switch(ifeel_switch))
 
     if CORE.is_esp8266 or CORE.is_esp32:
+        # Should be the fork with expanded gree ifeel
         cg.add_library("crankyoldgit/IRremoteESP8266", "2.8.6")
-        cg.add_library(
-            None,
-            None,
-            "https://github.com/letscontrolit/ESPEasy.git"
-        )
