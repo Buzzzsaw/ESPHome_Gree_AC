@@ -43,5 +43,5 @@ async def to_code(config):
         cg.add_library(
             None,
             None,
-            "https://github.com/h2zero/esp-nimble-cpp.git"
+            "https://github.com/letscontrolit/ESPEasy.git"
         )
