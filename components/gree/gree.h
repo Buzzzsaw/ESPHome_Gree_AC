@@ -15,7 +15,7 @@ class GreeClimate : public climate::Climate, public Component {
 private:
   IRGreeAC* transmitter_;
   sensor::Sensor *temperature_sensor_{nullptr};
-  switch_::Switch *ifeel_switch_{nullptr}
+  switch_::Switch *ifeel_switch_{nullptr};
 
   void setClimateMode(const climate::ClimateMode climateMode);
   void setTargetTemperature(const float targetTemperature);
