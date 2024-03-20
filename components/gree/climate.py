@@ -43,5 +43,5 @@ async def to_code(config):
         cg.add_library(
             None,
             None,
-            "https://github.com/letscontrolit/ESPEasy.git#mega-20240229"
+            "https://github.com/letscontrolit/ESPEasy.git"
         )
