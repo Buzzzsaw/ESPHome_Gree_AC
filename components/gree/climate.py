@@ -16,7 +16,7 @@ CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
         cv.GenerateID(): cv.declare_id(GreeClimate),
         cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
         cv.Optional(CONF_SENSOR): cv.use_id(sensor.Sensor),
-        cv.Optional(CONF_SWITCH): cv.use_id(switch.Switch)
+        cv.Optional(CONF_SWITCHES): cv.use_id(switch.Switch)
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
@@ -32,8 +32,8 @@ async def to_code(config):
         temperature_sensor = await cg.get_variable(config[CONF_SENSOR])
         cg.add(var.set_temperature_sensor(temperature_sensor))
     
-    if CONF_SWITCH in config:
-        ifeel_switch = await cg.get_variable(config[CONF_SWITCH])
+    if CONF_SWITCHES in config:
+        ifeel_switch = await cg.get_variable(config[CONF_SWITCHES])
         cg.add(var.set_ifeel_switch(ifeel_switch))
 
     if CORE.is_esp8266 or CORE.is_esp32:
