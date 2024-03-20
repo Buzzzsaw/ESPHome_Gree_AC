@@ -2,7 +2,7 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import pins
 from esphome.components import climate, sensor, switch
-from esphome.const import CONF_ID, CONF_PIN, CONF_SENSOR, CONF_SWITCH
+from esphome.const import CONF_ID, CONF_PIN, CONF_SENSOR, CONF_SWITCHES
 from esphome.core import CORE
 
 AUTO_LOAD = ["sensor, switch"]
