@@ -5,7 +5,7 @@ from esphome.components import climate, sensor, switch
 from esphome.const import CONF_ID, CONF_PIN, CONF_SENSOR
 from esphome.core import CORE
 
-AUTO_LOAD = ["sensor, switch"]
+AUTO_LOAD = ["sensor"]
 CODEOWNERS = ["@buzzzsaw"]
 
 CONF_IFEEL_SWITCH = "ifeel_switch"
