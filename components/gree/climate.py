@@ -19,8 +19,8 @@ CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
         cv.GenerateID(): cv.declare_id(GreeClimate),
         cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
         cv.Optional(CONF_SENSOR): cv.use_id(sensor.Sensor),
-        cv.Optional(CONF_IFEEL_SWITCH): cv.use_id(switch.Switch)
-        cv.Optional(CONF_TEMPERATURE_DISPLAY_SELECT): cv.use_id(select.Select)
+        cv.Optional(CONF_IFEEL_SWITCH): cv.use_id(switch.Switch),
+        cv.Optional(CONF_TEMPERATURE_DISPLAY_SELECT): cv.use_id(select.Select),
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
