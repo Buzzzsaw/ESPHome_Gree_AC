@@ -16,6 +16,7 @@ private:
   IRGreeAC* transmitter_;
   sensor::Sensor *temperature_sensor_{nullptr};
   switch_::Switch *ifeel_switch_{nullptr};
+  select::Select *temperature_display_select_{nullptr};
 
   void setClimateMode(const climate::ClimateMode climateMode);
   void setTargetTemperature(const float targetTemperature);
@@ -30,6 +31,7 @@ public:
   void control(const climate::ClimateCall &call) override;
   void set_temperature_sensor(sensor::Sensor *sensor) { this->temperature_sensor_ = sensor; }
   void set_ifeel_switch(switch_::Switch *ifeel_switch) { this->ifeel_switch_ = ifeel_switch; }
+  void set_temperature_display_select(select::Select *temperature_display_select) { this->temperature_display_select_ = temperature_display_select; }
 };
 
 } // namespace gree
