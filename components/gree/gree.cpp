@@ -49,9 +49,9 @@ void GreeClimate::setup()
   // Initialize temperature display select, if any.
   if (this->temperature_display_select_)
   {
-    this->temperature_display_select_->add_on_state_callback([this](std::string state)
+    this->temperature_display_select_->add_on_state_callback([this](std::string name, size_t index)
     {
-      ESP_LOGI(TAG, "Temperature display set to %s", state);
+      ESP_LOGI(TAG, "Temperature display set to %s(%d)", name, index);
     });
   }
 
