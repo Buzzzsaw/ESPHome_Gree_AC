@@ -36,6 +36,7 @@ void GreeClimate::setup()
       this->ifeel_switch_->add_on_state_callback([this](bool state)
       {
         this->transmitter_->setIFeel(state);
+        this->transmitter_->send();
         ESP_LOGI(TAG, "iFeel turned %s", state ? "ON" : "OFF");
       });
     }
