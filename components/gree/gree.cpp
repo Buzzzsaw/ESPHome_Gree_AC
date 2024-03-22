@@ -51,7 +51,7 @@ void GreeClimate::setup()
   {
     this->temperature_display_select_->add_on_state_callback([this](std::string name, size_t index)
     {
-      ESP_LOGI(TAG, "Temperature display set to %s(%d)", name, index);
+      ESP_LOGI(TAG, "Temperature display set to %s(%d)", name.c_str(), index);
     });
   }
 
