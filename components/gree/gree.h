@@ -1,6 +1,7 @@
 #pragma once
 
 #include "esphome/components/climate/climate.h"
+#include "esphome/components/select/select.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/switch/switch.h"
 #include "esphome/core/gpio.h"
