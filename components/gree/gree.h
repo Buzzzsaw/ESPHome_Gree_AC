@@ -23,6 +23,9 @@ private:
   void setTargetTemperature(const float targetTemperature);
   void setFanMode(const climate::ClimateFanMode fanMode);
   void setSwingMode(const climate::ClimateSwingMode swingMode);
+  std::function<void(float)> get_temperature_sensor_callback();
+  std::function<void(bool)> get_ifeel_switch_callback();
+  std::function<void(std::string, size_t)> get_temperature_display_callback();
 
 public:
   GreeClimate(InternalGPIOPin *pin);
