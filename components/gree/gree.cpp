@@ -224,7 +224,7 @@ std::function<void(float)> GreeClimate::get_temperature_sensor_callback()
   {
     this->current_temperature = state;
     this->publish_state();
-  }
+  };
 }
 
 std::function<void(bool)> GreeClimate::get_ifeel_switch_callback()
@@ -234,7 +234,7 @@ std::function<void(bool)> GreeClimate::get_ifeel_switch_callback()
     this->transmitter_->setIFeel(state);
     this->transmitter_->send();
     ESP_LOGI(TAG, "iFeel turned %s", state ? "ON" : "OFF");
-  }
+  };
 }
 
 std::function<void(std::string, size_t)> GreeClimate::get_temperature_display_callback()
@@ -242,7 +242,7 @@ std::function<void(std::string, size_t)> GreeClimate::get_temperature_display_ca
   return [this](std::string name, size_t index)
   {
     ESP_LOGI(TAG, "Temperature display set to %s(%d)", name.c_str(), index);
-  }
+  };
 }
 
 } // namespace gree
