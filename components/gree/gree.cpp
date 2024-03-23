@@ -16,11 +16,7 @@ void GreeClimate::setup()
   // Initialize provided temperature sensor, if any.
   if (this->temperature_sensor_)
   {
-    this->temperature_sensor_->add_on_state_callback([this](float state)
-    {
-      this->current_temperature = state;
-      this->publish_state();
-    });
+    this->temperature_sensor_->add_on_state_callback(get_temperature_sensor_callback());
     this->current_temperature = this->temperature_sensor_->state;
   } 
   else
@@ -33,12 +29,7 @@ void GreeClimate::setup()
   {
     if (this->temperature_sensor_)
     {
-      this->ifeel_switch_->add_on_state_callback([this](bool state)
-      {
-        this->transmitter_->setIFeel(state);
-        this->transmitter_->send();
-        ESP_LOGI(TAG, "iFeel turned %s", state ? "ON" : "OFF");
-      });
+      this->ifeel_switch_->add_on_state_callback(get_ifeel_switch_callback());
     }
     else
     {
@@ -49,10 +40,7 @@ void GreeClimate::setup()
   // Initialize temperature display select, if any.
   if (this->temperature_display_select_)
   {
-    this->temperature_display_select_->add_on_state_callback([this](std::string name, size_t index)
-    {
-      ESP_LOGI(TAG, "Temperature display set to %s(%d)", name.c_str(), index);
-    });
+    this->temperature_display_select_->add_on_state_callback(get_temperature_display_callback());
   }
 
   // Restore previous state, if any.
@@ -228,6 +216,33 @@ void GreeClimate::setSwingMode(const climate::ClimateSwingMode swingMode)
 
   this->swing_mode = swingMode;
   this->publish_state();
+}
+
+std::function<void(float)> GreeClimate::get_temperature_sensor_callback()
+{
+  return [this](float state)
+  {
+    this->current_temperature = state;
+    this->publish_state();
+  }
+}
+
+std::function<void(bool)> GreeClimate::get_ifeel_switch_callback()
+{
+  return [this](bool state)
+  {
+    this->transmitter_->setIFeel(state);
+    this->transmitter_->send();
+    ESP_LOGI(TAG, "iFeel turned %s", state ? "ON" : "OFF");
+  }
+}
+
+std::function<void(std::string, size_t)> GreeClimate::get_temperature_display_callback()
+{
+  return [this](std::string name, size_t index)
+  {
+    ESP_LOGI(TAG, "Temperature display set to %s(%d)", name.c_str(), index);
+  }
 }
 
 } // namespace gree
