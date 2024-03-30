@@ -40,7 +40,7 @@ void GreeClimate::setup()
   // Initialize temperature display select, if any.
   if (this->temperature_display_select_)
   {
-    this->current_temperature_display_mode this->temperature_display_select_->state;
+    this->current_temperature_display_mode = this->temperature_display_select_->state;
     this->temperature_display_select_->add_on_state_callback(get_temperature_display_callback());
   }
 
@@ -293,7 +293,7 @@ void GreeClimate::send_display_temperature(const uint8_t mode)
 }
 
 /// Translates well known display temperature mode names to their Gree IR value.
-static uint8_t GreeClimate::get_display_temperature_value(std::string mode)
+uint8_t GreeClimate::get_display_temperature_value(std::string mode)
 {
   if (mode == "OFF")
   {
