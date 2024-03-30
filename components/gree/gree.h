@@ -18,7 +18,7 @@ private:
   sensor::Sensor *temperature_sensor_{nullptr};
   switch_::Switch *ifeel_switch_{nullptr};
   select::Select *temperature_display_select_{nullptr};
-  uint8_t current_temperature_display_mode;
+  std::string current_temperature_display_mode;
 
   void setClimateMode(const climate::ClimateMode climateMode);
   void setTargetTemperature(const float targetTemperature);

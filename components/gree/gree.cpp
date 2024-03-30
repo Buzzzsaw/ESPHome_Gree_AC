@@ -249,27 +249,29 @@ std::function<void(std::string, size_t)> GreeClimate::get_temperature_display_ca
       return;
     }
 
-    this->send_display_temperature(mode);
-    ESP_LOGI(TAG, "Temperature display set to %s(%d)", name.c_str(), index);
+    uint8_t current = this->get_display_temperature_value(this->current_temperature_display_mode);
+    this->send_display_temperature(current, mode);
+
+    this->current_temperature_display_mode = name;
+    ESP_LOGI(TAG, "Temperature display set to %s(%d)", this->current_temperature_display_mode.c_str(), index);
   };
 }
 
 /// Sends the given display temperature mode through the IR, by going through the required order.
 /// This can end up with multiple sends.
 /// See: https://github.com/crankyoldgit/IRremoteESP8266/blob/61b43dea9726332c11ed6e26f0c4e7c95e9602f7/src/ir_Gree.cpp#L454
-void GreeClimate::send_display_temperature(const uint8_t mode)
+void GreeClimate::send_display_temperature(const uint8_t current, const uint8_t target)
 {
-  uint8_t current = this->current_temperature_display_mode;
-  if (mode == current)
+  if (target == current)
   {
     ESP_LOGD(TAG, "Temperature display already set to '%d'", mode);
     return;
   }
   
   std::vector<uint8_t> sequence;
-  if (mode > current)
+  if (target > current)
   {
-    for (uint8_t i = current + 1; i <= mode; i++)
+    for (uint8_t i = current + 1; i <= target; i++)
     {
       sequence.push_back(i);
     }
@@ -280,7 +282,7 @@ void GreeClimate::send_display_temperature(const uint8_t mode)
     {
       sequence.push_back(i);
     }
-    for (uint8_t i = 0; i <= mode; i++)
+    for (uint8_t i = 0; i <= target; i++)
     {
       sequence.push_back(i);
     }
