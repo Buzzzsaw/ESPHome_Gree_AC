@@ -40,6 +40,7 @@ void GreeClimate::setup()
   // Initialize temperature display select, if any.
   if (this->temperature_display_select_)
   {
+    this->current_temperature_display_mode this->temperature_display_select_->state;
     this->temperature_display_select_->add_on_state_callback(get_temperature_display_callback());
   }
 
@@ -241,8 +242,79 @@ std::function<void(std::string, size_t)> GreeClimate::get_temperature_display_ca
 {
   return [this](std::string name, size_t index)
   {
+    uint8_t mode = this->get_display_temperature_value(name);
+    if (mode == -1)
+    {
+      ESP_LOGE(TAG, "Unable to translate display temperature mode '%s'", name.c_str());
+      return;
+    }
+
+    this->send_display_temperature(mode);
     ESP_LOGI(TAG, "Temperature display set to %s(%d)", name.c_str(), index);
   };
+}
+
+/// Sends the given display temperature mode through the IR, by going through the required order.
+/// This can end up with multiple sends.
+/// See: https://github.com/crankyoldgit/IRremoteESP8266/blob/61b43dea9726332c11ed6e26f0c4e7c95e9602f7/src/ir_Gree.cpp#L454
+void GreeClimate::send_display_temperature(const uint8_t mode)
+{
+  uint8_t current = this->current_temperature_display_mode;
+  if (mode == current)
+  {
+    ESP_LOGD(TAG, "Temperature display already set to '%d'", mode);
+    return;
+  }
+  
+  std::vector<uint8_t> sequence;
+  if (mode > current)
+  {
+    for (uint8_t i = current + 1; i <= mode; i++)
+    {
+      sequence.push_back(i);
+    }
+  }
+  else
+  {
+    for (uint8_t i = current + 1; i <= 3; i++)
+    {
+      sequence.push_back(i);
+    }
+    for (uint8_t i = 0; i <= mode; i++)
+    {
+      sequence.push_back(i);
+    }
+  }
+
+  for(const uint8_t& i : sequence)
+  {
+    this->transmitter_->setDisplayTempSource(i);
+  }
+}
+
+/// Translates well known display temperature mode names to their Gree IR value.
+static uint8_t GreeClimate::get_display_temperature_value(std::string mode)
+{
+  if (mode == "OFF")
+  {
+    return 0;
+  }
+  else if (mode == "SET")
+  {
+    return 1;
+  }
+  else if (mode == "INSIDE")
+  {
+    return 2;
+  }
+  else if (mode == "OUTSIDE")
+  {
+    return 3;
+  }
+  else
+  {
+    return -1;
+  }
 }
 
 } // namespace gree
