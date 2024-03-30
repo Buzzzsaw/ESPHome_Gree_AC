@@ -27,7 +27,7 @@ private:
   std::function<void(float)> get_temperature_sensor_callback();
   std::function<void(bool)> get_ifeel_switch_callback();
   std::function<void(std::string, size_t)> get_temperature_display_callback();
-  void send_display_temperature(const uint8_t);
+  void send_display_temperature(const uint8_t, const uint8_t);
 
   static uint8_t get_display_temperature_value(std::string);
 
