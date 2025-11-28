@@ -32,4 +32,4 @@ async def to_code(config):
       cg.add(var.set_temperature_sensor(temperature_sensor))
 
     if CORE.is_esp8266 or CORE.is_esp32:
-        cg.add_library("crankyoldgit/IRremoteESP8266", "2.8.4")
+        cg.add_library("crankyoldgit/IRremoteESP8266", "2.8.6")
