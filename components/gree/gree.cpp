@@ -1,5 +1,6 @@
 #include "gree.h"
 #include "esphome/core/log.h"
+#include <set>
 
 static const char *const TAG = "gree.climate";
 
@@ -50,8 +51,8 @@ climate::ClimateTraits GreeClimate::traits()
 {
   auto traits = climate::ClimateTraits();
 
-  traits.set_supports_current_temperature(true);
-  traits.set_supports_two_point_target_temperature(false);
+  traits.add_feature_flags(esphome::climate::CLIMATE_SUPPORTS_CURRENT_TEMPERATURE);
+  
   if (this->visual_min_temperature_override_.has_value()) 
   {
     traits.set_visual_min_temperature(*this->visual_min_temperature_override_);
@@ -65,26 +66,29 @@ climate::ClimateTraits GreeClimate::traits()
     traits.set_visual_temperature_step(*this->visual_target_temperature_step_override_);
   }
 
-  std::set<climate::ClimateMode> climateModes; 
-  climateModes.insert(climate::CLIMATE_MODE_OFF);
-  climateModes.insert(climate::CLIMATE_MODE_COOL);
-  climateModes.insert(climate::CLIMATE_MODE_HEAT);
-  climateModes.insert(climate::CLIMATE_MODE_DRY);
-  climateModes.insert(climate::CLIMATE_MODE_FAN_ONLY);
-  traits.set_supported_modes(climateModes);
+  auto modes = esphome::climate::ClimateModeMask{
+    esphome::climate::CLIMATE_MODE_HEAT,
+    esphome::climate::CLIMATE_MODE_COOL,
+    esphome::climate::CLIMATE_MODE_HEAT,
+    esphome::climate::CLIMATE_MODE_DRY,
+    esphome::climate::CLIMATE_MODE_FAN_ONLY
+  };
+  traits.set_supported_modes(modes);
 
-  std::set<climate::ClimateFanMode> climateFanModes; 
-  climateFanModes.insert(climate::CLIMATE_FAN_AUTO);
-  climateFanModes.insert(climate::CLIMATE_FAN_LOW);
-  climateFanModes.insert(climate::CLIMATE_FAN_MEDIUM);
-  climateFanModes.insert(climate::CLIMATE_FAN_HIGH);
-  climateFanModes.insert(climate::CLIMATE_FAN_FOCUS);
-  traits.set_supported_fan_modes(climateFanModes);
+  auto fanModes = esphome::climate::ClimateFanModeMask{
+    esphome::climate::CLIMATE_FAN_AUTO,
+    esphome::climate::CLIMATE_FAN_LOW,
+    esphome::climate::CLIMATE_FAN_MEDIUM,
+    esphome::climate::CLIMATE_FAN_HIGH,
+    esphome::climate::CLIMATE_FAN_FOCUS
+  };
+  traits.set_supported_fan_modes(fanModes);
 
-  std::set<climate::ClimateSwingMode> climateSwingModes;
-  climateSwingModes.insert(climate::CLIMATE_SWING_OFF);
-  climateSwingModes.insert(climate::CLIMATE_SWING_VERTICAL);
-  traits.set_supported_swing_modes(climateSwingModes);
+  auto swingModes = esphome::climate::ClimateSwingModeMask{
+    esphome::climate::CLIMATE_SWING_OFF,
+    esphome::climate::CLIMATE_SWING_VERTICAL,
+  };
+  traits.set_supported_swing_modes(swingModes);
 
   return traits;
 }

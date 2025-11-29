@@ -11,9 +11,8 @@ CODEOWNERS = ["@buzzzsaw"]
 gree_ns = cg.esphome_ns.namespace("gree")
 GreeClimate = gree_ns.class_("GreeClimate", climate.Climate, cg.Component)
 
-CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
+CONFIG_SCHEMA = climate.climate_schema(GreeClimate).extend(
     {
-        cv.GenerateID(): cv.declare_id(GreeClimate),
         cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
         cv.Optional(CONF_SENSOR): cv.use_id(sensor.Sensor),
     }
@@ -32,4 +31,4 @@ async def to_code(config):
       cg.add(var.set_temperature_sensor(temperature_sensor))
 
     if CORE.is_esp8266 or CORE.is_esp32:
-        cg.add_library("crankyoldgit/IRremoteESP8266", "2.8.4")
+        cg.add_library("crankyoldgit/IRremoteESP8266", "2.8.6")
