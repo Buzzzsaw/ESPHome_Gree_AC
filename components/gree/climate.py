@@ -11,12 +11,11 @@ CODEOWNERS = ["@buzzzsaw"]
 gree_ns = cg.esphome_ns.namespace("gree")
 GreeClimate = gree_ns.class_("GreeClimate", climate.Climate, cg.Component)
 
-CONFIG_SCHEMA = climate.climate_schema(GreeClimate)
-    .extend(
-        {
-            cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
-            cv.Optional(CONF_SENSOR): cv.use_id(sensor.Sensor),
-        }
+CONFIG_SCHEMA = climate.climate_schema(GreeClimate).extend(
+    {
+        cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
+        cv.Optional(CONF_SENSOR): cv.use_id(sensor.Sensor),
+    }
 ).extend(cv.COMPONENT_SCHEMA)
 
 
