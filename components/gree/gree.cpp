@@ -1,5 +1,6 @@
 #include "gree.h"
 #include "esphome/core/log.h"
+#include <cmath>
 #include <set>
 
 static const char *const TAG = "gree.climate";
@@ -53,21 +54,20 @@ climate::ClimateTraits GreeClimate::traits()
 
   traits.add_feature_flags(esphome::climate::CLIMATE_SUPPORTS_CURRENT_TEMPERATURE);
   
-  if (this->visual_min_temperature_override_.has_value()) 
-  {
-    traits.set_visual_min_temperature(*this->visual_min_temperature_override_);
+  if (!std::isnan(this->visual_min_temperature_override_)) {
+    traits.set_visual_min_temperature(this->visual_min_temperature_override_);
   }
-  if (this->visual_max_temperature_override_.has_value()) 
-  {
-    traits.set_visual_max_temperature(*this->visual_max_temperature_override_);
+
+  if (!std::isnan(this->visual_max_temperature_override_)) {
+    traits.set_visual_max_temperature(this->visual_max_temperature_override_);
   }
-  if (this->visual_target_temperature_step_override_.has_value()) 
-  {
-    traits.set_visual_temperature_step(*this->visual_target_temperature_step_override_);
+
+  if (!std::isnan(this->visual_target_temperature_step_override_)) {
+    traits.set_visual_temperature_step(this->visual_target_temperature_step_override_);
   }
 
   auto modes = esphome::climate::ClimateModeMask{
-    esphome::climate::CLIMATE_MODE_HEAT,
+    esphome::climate::CLIMATE_MODE_OFF,
     esphome::climate::CLIMATE_MODE_COOL,
     esphome::climate::CLIMATE_MODE_HEAT,
     esphome::climate::CLIMATE_MODE_DRY,
